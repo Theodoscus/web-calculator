@@ -66,6 +66,19 @@ body{
     width: 300px;
     height: 100px;
     background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.main .calculator .screen #result{
+    padding: 10px 20px 0 0;
+    font-size: 30px;
+}
+
+.main .calculator .screen #calculation{
+    padding: 20px 20px 0 0;
+    font-size: 20px;
 }
 
 .main .calculator .keyboard{
@@ -121,6 +134,11 @@ body{
     border-color: black;
     border-radius: 20px;
     font-size: large;
+}
+
+button:hover{
+    background-color: black;
+    color: white;
 }
 
 .footer{
