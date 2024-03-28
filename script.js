@@ -38,12 +38,25 @@ ac.addEventListener('click', function() {
 });
 
 c.addEventListener('click', function() {
-    resultScreen.textContent = '0';
-    calcScreen.textContent ='0';
+    if (calcScreen.textContent!=0){
+        let numbers = calcScreen.textContent.match(/(\d+)([+\-x\/]?)(\d*)/);
+        let firstnum = numbers[1];
+        let operator = numbers[2];
+        let secondnum = numbers[3];
+        if (operator === '' && secondnum ===''){
+            calcScreen.textContent=0;
+        }else if (secondnum ===''){
+            calcScreen.textContent=firstnum;
+            calcflag=false;
+        }else{
+            calcScreen.textContent=firstnum+operator;
+
+        }
+    }
 });
 
 btnadd.addEventListener('click', function() {
-    if (calcflag==false){
+    if ((calcflag==false)&&(calcScreen.textContent.length<19)){
         calcScreen.textContent += '+';
         calculation='add';
         calcflag=true;
@@ -52,7 +65,7 @@ btnadd.addEventListener('click', function() {
 });
 
 btnsub.addEventListener('click', function() {
-    if (calcflag==false){
+    if ((calcflag==false)&&(calcScreen.textContent.length<19)){
         calcScreen.textContent += '-';
         calculation='substract';
         calcflag=true;
@@ -61,7 +74,7 @@ btnsub.addEventListener('click', function() {
 });
 
 btnmul.addEventListener('click', function() {
-    if (calcflag==false){
+    if ((calcflag==false)&&(calcScreen.textContent.length<19)){
         calcScreen.textContent += 'x';
         calculation='multiply';
         calcflag=true;
@@ -70,7 +83,7 @@ btnmul.addEventListener('click', function() {
 });
 
 btndiv.addEventListener('click', function() {
-    if (calcflag==false){
+    if ((calcflag==false)&&(calcScreen.textContent.length<19)){
         calcScreen.textContent += '/';
         calculation='divide';
         calcflag=true;
@@ -79,7 +92,9 @@ btndiv.addEventListener('click', function() {
 });
 
 btndot.addEventListener('click', function() {
-        calcScreen.textContent += '.';
+
+    if(calcScreen.textContent.length<19){
+        calcScreen.textContent += '.';}
 });
 
 
@@ -90,7 +105,13 @@ btnequal.addEventListener('click', function() {
         num1 = parseFloat(match[1]); 
         num2 = parseFloat(match[3]);
         const sum = add(num1, num2);
+        if (sum.toString().length>18){
+            resultScreen.textContent="Error"
+        } else {
         resultScreen.textContent=sum;
+        calcScreen.textContent=sum;
+        calcflag=false;
+    }
 
     }else if((calcflag==true)&&(calculation=='substract')){
         const regex = /(\d+(\.\d+)?)\-(\d+(\.\d+)?)/; 
@@ -98,14 +119,26 @@ btnequal.addEventListener('click', function() {
         num1 = parseFloat(match[1]); 
         num2 = parseFloat(match[3]);
         const sum = substract(num1, num2);
+        if (sum.toString().length>10){
+            resultScreen.textContent="Error"
+        } else {
         resultScreen.textContent=sum;
+        calcScreen.textContent=sum;
+        calcflag=false;
+    }
     }else if((calcflag==true)&&(calculation=='multiply')){
         const regex = /(\d+(\.\d+)?)\x(\d+(\.\d+)?)/; 
         const match = calcScreen.textContent.match(regex);
         num1 = parseFloat(match[1]); 
         num2 = parseFloat(match[3]);
         const sum = multiply(num1, num2);
+        if (sum.toString().length>10){
+            resultScreen.textContent="Error"
+        } else {
         resultScreen.textContent=sum;
+        calcScreen.textContent=sum;
+        calcflag=false;
+    }
     }else if((calcflag==true)&&(calculation=='divide')){
         const regex = /(\d+(\.\d+)?)\/(\d+(\.\d+)?)/; 
         const match = calcScreen.textContent.match(regex);
@@ -113,7 +146,13 @@ btnequal.addEventListener('click', function() {
         num2 = parseFloat(match[3]);
         if(num2!=0){
             const sum = divide(num1, num2);
+            console.log(sum.length);
+            if (sum.toString().length>10){
+                resultScreen.textContent="Error"
+            } else {
             resultScreen.textContent=sum;
+            calcScreen.textContent=sum;
+            calcflag=false;}
         }else{
             resultScreen.textContent='MathError';
         }
@@ -121,7 +160,7 @@ btnequal.addEventListener('click', function() {
 });
 
 btn0.addEventListener('click', function() {
-    if((calcScreen.textContent!='0')&&(calcScreen.textContent.length<12)){
+    if((calcScreen.textContent!='0')&&(calcScreen.textContent.length<20)){
         calcScreen.textContent = calcScreen.textContent+0;
     }
 });
@@ -129,7 +168,7 @@ btn0.addEventListener('click', function() {
 btn1.addEventListener('click', function() {
     if(calcScreen.textContent=='0'){
         calcScreen.textContent='1'  
-    }else if(calcScreen.textContent.length<12){
+    }else if(calcScreen.textContent.length<20){
         calcScreen.textContent=calcScreen.textContent+1;
     }
 });
@@ -137,7 +176,7 @@ btn1.addEventListener('click', function() {
 btn2.addEventListener('click', function() {
     if(calcScreen.textContent=='0'){
         calcScreen.textContent='2'  
-    }else if(calcScreen.textContent.length<12){
+    }else if(calcScreen.textContent.length<20){
         calcScreen.textContent=calcScreen.textContent+2;
     }
 });
@@ -145,7 +184,7 @@ btn2.addEventListener('click', function() {
 btn3.addEventListener('click', function() {
     if(calcScreen.textContent=='0'){
         calcScreen.textContent='3'  
-    }else if(calcScreen.textContent.length<12){
+    }else if(calcScreen.textContent.length<20){
         calcScreen.textContent=calcScreen.textContent+3;
     }
 });
@@ -153,7 +192,7 @@ btn3.addEventListener('click', function() {
 btn4.addEventListener('click', function() {
     if(calcScreen.textContent=='0'){
         calcScreen.textContent='4'  
-    }else if(calcScreen.textContent.length<12){
+    }else if(calcScreen.textContent.length<20){
         calcScreen.textContent=calcScreen.textContent+4;
     }
 });
@@ -161,7 +200,7 @@ btn4.addEventListener('click', function() {
 btn5.addEventListener('click', function() {
     if(calcScreen.textContent=='0'){
         calcScreen.textContent='5'  
-    }else if(calcScreen.textContent.length<12){
+    }else if(calcScreen.textContent.length<20){
         calcScreen.textContent=calcScreen.textContent+5;
     }
 });
@@ -169,7 +208,7 @@ btn5.addEventListener('click', function() {
 btn6.addEventListener('click', function() {
     if(calcScreen.textContent=='0'){
         calcScreen.textContent='6'  
-    }else if(calcScreen.textContent.length<12){
+    }else if(calcScreen.textContent.length<20){
         calcScreen.textContent=calcScreen.textContent+6;
     }
 });
@@ -177,7 +216,7 @@ btn6.addEventListener('click', function() {
 btn7.addEventListener('click', function() {
     if(calcScreen.textContent=='0'){
         calcScreen.textContent='7'  
-    }else if(calcScreen.textContent.length<12){
+    }else if(calcScreen.textContent.length<20){
         calcScreen.textContent=calcScreen.textContent+7;
     }
 });
@@ -185,7 +224,7 @@ btn7.addEventListener('click', function() {
 btn8.addEventListener('click', function() {
     if(calcScreen.textContent=='0'){
         calcScreen.textContent='8'  
-    }else if(calcScreen.textContent.length<12){
+    }else if(calcScreen.textContent.length<20){
         calcScreen.textContent=calcScreen.textContent+8;
     }
 });
@@ -193,7 +232,7 @@ btn8.addEventListener('click', function() {
 btn9.addEventListener('click', function() {
     if(calcScreen.textContent=='0'){
         calcScreen.textContent='9'  
-    }else if(calcScreen.textContent.length<12){
+    }else if(calcScreen.textContent.length<20){
         calcScreen.textContent=calcScreen.textContent+9;
     }
 });
