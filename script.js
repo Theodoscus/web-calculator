@@ -22,7 +22,7 @@ const btndiv = document.getElementById('divide');
 resultScreen.textContent = '0';
 calcScreen.textContent ='0';
 let calcflag = false;
-let equalflag = false;
+let dotflag = false;
 let num1 = 0;
 let num2 = 0;
 let calculation = '';
@@ -38,21 +38,37 @@ ac.addEventListener('click', function() {
 });
 
 c.addEventListener('click', function() {
-    if (calcScreen.textContent!=0){
-        let numbers = calcScreen.textContent.match(/(\d+)([+\-x\/]?)(\d*)/);
-        let firstnum = numbers[1];
-        let operator = numbers[2];
-        let secondnum = numbers[3];
-        if (operator === '' && secondnum ===''){
-            calcScreen.textContent=0;
-        }else if (secondnum ===''){
-            calcScreen.textContent=firstnum;
-            calcflag=false;
-        }else{
-            calcScreen.textContent=firstnum+operator;
+    // if (calcScreen.textContent!=0){
+    //     let numbers = calcScreen.textContent.match(/(\d+(\.\d+)?)([+\-x\/]?)(\d+(\.\d+)?)/);
+    //     console.log(numbers);
+    //     let onlynum = numbers[0]
+    //     let firstnum = numbers[1];
+    //     let operator = numbers[3];
+    //     let secondnum = numbers[4];
+    //     console.log(numbers[1]);
+    //     console.log(numbers[3]);
+    //     console.log(numbers[4]);
+        
+    //     if (secondnum!=='' && operator!==''){
+    //         calcScreen.textContent=firstnum+operator;
+            
+    //     }else if (operator!=='' && secondnum===''){
+    //         calcScreen.textContent=onlynum;
+    //         calcflag=false;}
+    //      }else{
+    //          calcScreen.textContent=0;
 
+        
+    // }
+    if (calcScreen.textContent.length > 1 && calcScreen.textContent!=0) {
+        const lastChar = calcScreen.textContent[calcScreen.textContent.length - 1];
+        if (lastChar === '+' || lastChar === '-' || lastChar === 'x' || lastChar === '/') {
+            calcflag = false;
         }
-    }
+        string = calcScreen.textContent.slice(0, -1);
+        calcScreen.textContent = string;}else{
+            calcScreen.textContent=0;
+        }
 });
 
 btnadd.addEventListener('click', function() {
@@ -92,15 +108,26 @@ btndiv.addEventListener('click', function() {
 });
 
 btndot.addEventListener('click', function() {
-
+    const dotRegex = /\./g;
+    const dotCount = (calcScreen.textContent.match(dotRegex) || []).length;
     if(calcScreen.textContent.length<19){
-        calcScreen.textContent += '.';}
+        if(dotCount==0 && calcflag==false){
+            calcScreen.textContent += '.';
+            dotflag=false;
+        }else if(dotCount==0 && calcflag==true){
+            calcScreen.textContent += '.';
+            dotflag = true;
+        }else if(dotCount==1 && calcflag==true &&dotflag==false){
+            calcScreen.textContent += '.';
+        }
+        console.log(calcflag);
+        }
 });
 
 
 btnequal.addEventListener('click', function() {
     if((calcflag==true)&&(calculation=='add')){
-        const regex = /(\d+(\.\d+)?)\+(\d+(\.\d+)?)/; 
+        const regex = /(-?\-\d+(\.\d+)?)\+(\d+(\.\d+)?)/; 
         const match = calcScreen.textContent.match(regex);
         num1 = parseFloat(match[1]); 
         num2 = parseFloat(match[3]);
@@ -114,12 +141,13 @@ btnequal.addEventListener('click', function() {
     }
 
     }else if((calcflag==true)&&(calculation=='substract')){
-        const regex = /(\d+(\.\d+)?)\-(\d+(\.\d+)?)/; 
+        const regex = /(-?\d+(\.\d+)?)\-(\d+(\.\d+)?)/; 
         const match = calcScreen.textContent.match(regex);
         num1 = parseFloat(match[1]); 
         num2 = parseFloat(match[3]);
+        console.log(num1, num2)
         const sum = substract(num1, num2);
-        if (sum.toString().length>10){
+        if (sum.toString().length>18){
             resultScreen.textContent="Error"
         } else {
         resultScreen.textContent=sum;
@@ -127,12 +155,12 @@ btnequal.addEventListener('click', function() {
         calcflag=false;
     }
     }else if((calcflag==true)&&(calculation=='multiply')){
-        const regex = /(\d+(\.\d+)?)\x(\d+(\.\d+)?)/; 
+        const regex = /(-?\-\d+(\.\d+)?)\x(\d+(\.\d+)?)/; 
         const match = calcScreen.textContent.match(regex);
         num1 = parseFloat(match[1]); 
         num2 = parseFloat(match[3]);
         const sum = multiply(num1, num2);
-        if (sum.toString().length>10){
+        if (sum.toString().length>18){
             resultScreen.textContent="Error"
         } else {
         resultScreen.textContent=sum;
@@ -140,14 +168,14 @@ btnequal.addEventListener('click', function() {
         calcflag=false;
     }
     }else if((calcflag==true)&&(calculation=='divide')){
-        const regex = /(\d+(\.\d+)?)\/(\d+(\.\d+)?)/; 
+        const regex = /(-?\-\d+(\.\d+)?)\/(\d+(\.\d+)?)/; 
         const match = calcScreen.textContent.match(regex);
         num1 = parseFloat(match[1]); 
         num2 = parseFloat(match[3]);
         if(num2!=0){
             const sum = divide(num1, num2);
             console.log(sum.length);
-            if (sum.toString().length>10){
+            if (sum.toString().length>16){
                 resultScreen.textContent="Error"
             } else {
             resultScreen.textContent=sum;
