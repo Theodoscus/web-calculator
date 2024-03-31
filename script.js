@@ -26,6 +26,7 @@ let dotflag = false;
 let num1 = 0;
 let num2 = 0;
 let calculation = '';
+let negativenum = false;
 
 ac.addEventListener('click', function() {
     resultScreen.textContent = '0';
@@ -127,7 +128,7 @@ btndot.addEventListener('click', function() {
 
 btnequal.addEventListener('click', function() {
     if((calcflag==true)&&(calculation=='add')){
-        const regex = /(-?\-\d+(\.\d+)?)\+(\d+(\.\d+)?)/; 
+        const regex = /(-?\d+(\.\d+)?)\+(\d+(\.\d+)?)/; 
         const match = calcScreen.textContent.match(regex);
         num1 = parseFloat(match[1]); 
         num2 = parseFloat(match[3]);
@@ -155,7 +156,7 @@ btnequal.addEventListener('click', function() {
         calcflag=false;
     }
     }else if((calcflag==true)&&(calculation=='multiply')){
-        const regex = /(-?\-\d+(\.\d+)?)\x(\d+(\.\d+)?)/; 
+        const regex = /(-?\d+(\.\d+)?)\x(\d+(\.\d+)?)/; 
         const match = calcScreen.textContent.match(regex);
         num1 = parseFloat(match[1]); 
         num2 = parseFloat(match[3]);
@@ -168,7 +169,7 @@ btnequal.addEventListener('click', function() {
         calcflag=false;
     }
     }else if((calcflag==true)&&(calculation=='divide')){
-        const regex = /(-?\-\d+(\.\d+)?)\/(\d+(\.\d+)?)/; 
+        const regex = /(-?\d+(\.\d+)?)\/(\d+(\.\d+)?)/; 
         const match = calcScreen.textContent.match(regex);
         num1 = parseFloat(match[1]); 
         num2 = parseFloat(match[3]);
